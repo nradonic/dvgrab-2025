@@ -540,7 +540,7 @@ int iec61883Reader::Handler( unsigned char *data, int length, int dropped )
 
     // *** FIX: ADD BOUNDS CHECKING ***
     int currentLen = currentFrame->GetDataLen();
-    int maxFrameSize = currentFrame->GetFrameSize(); // 120000 or 144000
+    int maxFrameSize = static_cast<DVFrame*>(currentFrame)->GetFrameSize(); // 120000 or 144000
     
     if (currentLen + length > maxFrameSize)
     {
