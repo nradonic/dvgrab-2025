@@ -126,6 +126,16 @@ Docker Commands:
    docker cp extract_container:/build/dvgrab dvgrab
    docker rm extract_container
 
+Cross compile library:
+   'dvgrab' is the executable
+   The target Linux Intel machine probably needs to have libdv explicitly 
+   installed (since it wasn't built and installed there):
+   
+      $ sudo dnf install libdv.x86_64
+
+   Since this is manual installation into the executable $PATH the rest of the installation 
+   references on this page are not considered. Follow the regular instructions if built
+   by regular native compilation. The source is identical except for the memcopy patch.
 
 
 
