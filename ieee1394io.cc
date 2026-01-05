@@ -537,6 +537,28 @@ int iec61883Reader::Handler( unsigned char *data, int length, int dropped )
 		}
 	}
 
+
+    // *** FIX: ADD BOUNDS CHECKING ***
+    int currentLen = currentFrame->GetDataLen();
+    int maxFrameSize = currentFrame->GetFrameSize(); // 120000 or 144000
+    
+    if (currentLen + length > maxFrameSize)
+    {
+        // Buffer would overflow - drop this packet and reset frame
+        fprintf(stderr, "ERROR: Frame buffer overflow prevented! "
+                "current=%d, incoming=%d, max=%d\n",
+                currentLen, length, maxFrameSize);
+        
+        // Reset the frame to prevent corruption
+        currentFrame->Clear();
+        badFrames++;
+        droppedFrames++;
+        
+        // Don't attempt the memcpy
+        return 0;
+    }
+    // *** END FIX ***
+	
 	memcpy( &currentFrame->data[currentFrame->GetDataLen()], data, length );
 	currentFrame->AddDataLen( length );
 
