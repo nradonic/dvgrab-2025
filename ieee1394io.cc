@@ -537,8 +537,8 @@ int iec61883Reader::Handler( unsigned char *data, int length, int dropped )
 		}
 	}
 
-    // *** BOUNDS CHECKING FOR DV FRAMES ONLY ***
-	if (currentFrame->IsHDV())
+    //  BOUNDS CHECKING FOR DV FRAMES ONLY 
+	if (!currentFrame->IsHDV())
 	{
 		int currentLen = currentFrame->GetDataLen();
 		int maxFrameSize = static_cast<DVFrame*>(currentFrame)->GetFrameSize(); // 120000 or 144000
@@ -559,7 +559,6 @@ int iec61883Reader::Handler( unsigned char *data, int length, int dropped )
 			return 0;
 		}
 	}
-    // *** END BOUNDS CHECKING ***
 	
 	memcpy( &currentFrame->data[currentFrame->GetDataLen()], data, length );
 	currentFrame->AddDataLen( length );
